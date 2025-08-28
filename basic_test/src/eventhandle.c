@@ -27,7 +27,7 @@ int perform_action(int ev, event_object_t *object);
 event_object_t object_arr[] =
     {{"mayer", 55},
      {"binin", 55},
-     {"guagfee", 21}};
+     {"guanfee", 21}};
 
 event_table_t event_table_arr[] =
     {{1, "print name"},
