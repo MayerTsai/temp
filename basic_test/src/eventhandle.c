@@ -88,5 +88,5 @@ int perform_action(int ev, event_object_t *object)
 void print_info()
 {
   for (int i = 0; i < (int)(sizeof(event_table_arr) / sizeof(event_table_t)); i++)
-    printf("%d    %s\n", event_table_arr[i].ev, event_table_arr[i].description);
+    printf("%d: %s\n", event_table_arr[i].ev, event_table_arr[i].description);
 }
