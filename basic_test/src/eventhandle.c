@@ -11,6 +11,7 @@ typedef struct
   int ev;
   char *description;
 } event_table_t, *ptr_event_table_t;
+void print_info();
 
 typedef void (*event_handler_t)(event_object_t *);
 
@@ -22,6 +23,7 @@ typedef struct
 
 int perform_action(int ev, event_object_t *object);
 
+// 初始化 initialization
 event_object_t object_arr[] =
     {{"mayer", 55},
      {"binin", 55},
@@ -40,6 +42,7 @@ event_handler_entry_t event_handler_arr[] =
 int main()
 {
   int ev = 0;
+  print_info();
   printf("please enter you action number:");
   scanf("%d", &ev);
   for (int i = 0; i < (int)(sizeof(object_arr) / sizeof(event_object_t)); i++)
@@ -80,4 +83,10 @@ int perform_action(int ev, event_object_t *object)
   }
   action(object);
   return 0;
+}
+
+void print_info()
+{
+  for (int i = 0; i < (int)(sizeof(event_table_arr) / sizeof(event_table_t)); i++)
+    printf("%d    %s\n", event_table_arr[i].ev, event_table_arr[i].description);
 }
