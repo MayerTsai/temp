@@ -14,9 +14,11 @@ void *process_print(void *);
 
 int main()
 {
+  // declare two threads
   pthread_t tid_1;
   pthread_t tid_2;
 
+  // create two objects with respect to both threads
   thread_object_t *object_1 = malloc(sizeof(thread_object_t));
   if (object_1 == NULL)
   {
@@ -54,14 +56,17 @@ int main()
   }
   object_2->tid = tid_2;
 
+  // prepare to load the returned object
   void *object_1_ret;
   void *object_2_ret;
+
+  // wait the threads to terminate
   pthread_join(tid_1, &object_1_ret);
   pthread_join(tid_2, &object_2_ret);
 
   printf("%s\n", (char *)object_1_ret);
   printf("%s\n", (char *)object_2_ret);
-
+  // release the memory
   free(object_1);
   free(object_2);
   free(object_1_ret);
@@ -78,6 +83,8 @@ void *process_print(void *object)
     my_str = "object 1 returns";
   else
     my_str = "object 2 returns";
+
+  // prepare the return object
   char *ret = strdup(my_str);
   if (ret == NULL)
   {
@@ -89,9 +96,9 @@ void *process_print(void *object)
   {
     printf("thread: %s\n", x->string);
     if (strcmp(x->string, "object_1") == 0)
-      sleep(1);
+      sleep(1); // simulating the fast task
     else
-      sleep(5);
+      sleep(5); // simulating the slow task
   }
 
   return (void *)ret;
