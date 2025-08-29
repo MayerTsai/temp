@@ -54,10 +54,18 @@ int main()
   }
   object_2->tid = tid_2;
 
-  pthread_join(tid_1, NULL);
-  pthread_join(tid_2, NULL);
+  void *object_1_ret;
+  void *object_2_ret;
+  pthread_join(tid_1, &object_1_ret);
+  pthread_join(tid_2, &object_2_ret);
+
+  printf("%s\n", (char *)object_1_ret);
+  printf("%s\n", (char *)object_2_ret);
+
   free(object_1);
   free(object_2);
+  free(object_1_ret);
+  free(object_2_ret);
 
   return 0;
 }
@@ -65,6 +73,19 @@ int main()
 void *process_print(void *object)
 {
   thread_object_t *x = (thread_object_t *)object;
+  char *my_str;
+  if (strcmp(x->string, "object_1") == 0)
+    my_str = "object 1 returns";
+  else
+    my_str = "object 2 returns";
+  char *ret = malloc(strlen(my_str));
+  if (ret == NULL)
+  {
+    perror("malloc for ret failed");
+    return NULL;
+  }
+  strcpy(ret, my_str);
+
   for (int i = 0; i < 10; i++)
   {
     printf("thread: %s\n", x->string);
@@ -73,5 +94,6 @@ void *process_print(void *object)
     else
       sleep(3);
   }
-  return NULL;
+
+  return (void *)ret;
 }
