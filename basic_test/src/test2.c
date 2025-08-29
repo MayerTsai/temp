@@ -86,13 +86,13 @@ void *process_print(void *object)
   }
   strcpy(ret, my_str);
 
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 5; i++)
   {
     printf("thread: %s\n", x->string);
     if (strcmp(x->string, "object_1") == 0)
       sleep(1);
     else
-      sleep(3);
+      sleep(5);
   }
 
   return (void *)ret;
