@@ -78,13 +78,12 @@ void *process_print(void *object)
     my_str = "object 1 returns";
   else
     my_str = "object 2 returns";
-  char *ret = malloc(strlen(my_str));
+  char *ret = strdup(my_str);
   if (ret == NULL)
   {
-    perror("malloc for ret failed");
+    perror("strdup failed");
     return NULL;
   }
-  strcpy(ret, my_str);
 
   for (int i = 0; i < 5; i++)
   {
