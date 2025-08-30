@@ -1,28 +1,27 @@
 #include "management.h"
 #include <stdio.h>
 
-int register_event_handler_table(thread_event_record_t *record)
-{
+// int register_event_handler_table(thread_event_record_t *record)
+//{
+// return 0;
+//}
 
-  return 0;
-}
-
-perform_action(int ev, event_object_t *object)
+void *perform_action(void *arg)
 {
-  event_handler_t action = NULL;
-  for (int i = 0; i < event_handler_arr_count; i++)
+  thread_object_t *thread_object = (thread_object_t *)arg;
+  event_object_t *ev_object = thread_object->object;
+  if (ev_object->id != thread_object->id)
   {
-    if (ev == event_handler_arr[i].ev)
-    {
-      action = event_handler_arr[i].handler;
-      break;
-    }
+    perror("Error the object is wrong\n");
+    return NULL;
   }
-  if (action == NULL)
+  event_handler_entry_t *ev_handler = thread_object->event_handler;
+  if (ev_handler == NULL)
   {
-    printf("the event number %d is not supported\n", ev);
-    return -1;
+    perror("Error fails to start the handler\n");
+    return NULL;
   }
-  action(object);
-  return 0;
+  event_handler_t handler = ev_handler->handler;
+  handler(ev_object);
+  return NULL;
 }
