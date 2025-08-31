@@ -13,7 +13,6 @@ int main(int argc, char *argv[], char *envp[])
     cout << argv[i] << endl;
 
   // If /n is passed to the .exe, display numbered listing of environment variables.
-  // if ((argc == 2) && _stricmp(argv[1], "/n") == 0)
   if ((argc == 2) && (string(argv[1]) == "/n"))
     numberLines = true;
 
