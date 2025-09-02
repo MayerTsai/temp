@@ -1,26 +1,52 @@
-// argument_definitions.cpp
-// compile with: /EHsc
-#include <iostream>
 #include <string>
-using namespace std;
+#include <vector>
+#include <sstream> // Required for std::stringstream
+#include <iostream>
+#include <cstdlib>
 
-using namespace std;
-int main(int argc, char *argv[], char *envp[])
+std::vector<std::string> splitStringStream(const std::string &str, char delimiter)
 {
-  bool numberLines = false; // Default is no line numbers.
-
-  for (int i = 0; i < argc; i++)
-    cout << argv[i] << endl;
-
-  // If /n is passed to the .exe, display numbered listing of environment variables.
-  if ((argc == 2) && (string(argv[1]) == "/n"))
-    numberLines = true;
-
-  // Walk through list of strings until a NULL is encountered.
-  for (int i = 0; envp[i] != NULL; ++i)
+  std::vector<std::string> tokens;
+  std::stringstream ss(str);
+  std::string token;
+  while (std::getline(ss, token, delimiter))
   {
-    if (numberLines)
-      cout << i << ": "; // Prefix with numbers if /n specified
-    cout << envp[i] << "\n";
+    tokens.push_back(token);
   }
+  return tokens;
+}
+
+std::string getEnv(const std::string &name, char *envp[])
+{
+  std::string ret;
+  for (int i = 0; envp[i] != NULL; i++)
+  {
+    std::string text = std::string(envp[i]);
+    char delimiter = '=';
+    std::vector<std::string> colors = splitStringStream(text, delimiter);
+    if (colors[0] != name)
+      continue;
+    else
+    {
+      ret = colors[1];
+      break;
+    }
+  }
+  return ret;
+}
+
+int main(int argc, char const *argv[], char *envp[])
+{
+  std::string str = getEnv("PATH", envp);
+  std::cout << "getENV:" << str << std::endl;
+
+  str = getenv("PATH");
+  std::cout << "getenv:" << str << std::endl;
+
+  char delimiter = ':';
+  std::vector<std::string> colors = splitStringStream(str, delimiter);
+  for (const std::string &color : colors)
+    std::cout << color << std::endl;
+
+  return 0;
 }
